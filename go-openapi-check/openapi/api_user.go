@@ -10,7 +10,6 @@
 package openapi
 
 import (
-	"encoding/json"
 	"net/http"
 	"strings"
 
@@ -19,7 +18,7 @@ import (
 
 // UserAPIController binds http requests to an api service and writes the service results to the http response
 type UserAPIController struct {
-	service UserAPIServicer
+	service      UserAPIServicer
 	errorHandler ErrorHandler
 }
 
@@ -78,7 +77,7 @@ func (c *UserAPIController) Routes() Routes {
 	}
 }
 
-// UserGet - 
+// UserGet -
 func (c *UserAPIController) UserGet(w http.ResponseWriter, r *http.Request) {
 	query, err := parseQuery(r.URL.RawQuery)
 	if err != nil {
@@ -123,7 +122,7 @@ func (c *UserAPIController) UserGet(w http.ResponseWriter, r *http.Request) {
 	EncodeJSONResponse(result.Body, &result.Code, w)
 }
 
-// UserIdDelete - 
+// UserIdDelete -
 func (c *UserAPIController) UserIdDelete(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	idParam := params["id"]
@@ -141,7 +140,7 @@ func (c *UserAPIController) UserIdDelete(w http.ResponseWriter, r *http.Request)
 	EncodeJSONResponse(result.Body, &result.Code, w)
 }
 
-// UserIdGet - 
+// UserIdGet -
 func (c *UserAPIController) UserIdGet(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	idParam := params["id"]
@@ -159,7 +158,7 @@ func (c *UserAPIController) UserIdGet(w http.ResponseWriter, r *http.Request) {
 	EncodeJSONResponse(result.Body, &result.Code, w)
 }
 
-// UserIdPut - 
+// UserIdPut -
 func (c *UserAPIController) UserIdPut(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	idParam := params["id"]
@@ -177,7 +176,7 @@ func (c *UserAPIController) UserIdPut(w http.ResponseWriter, r *http.Request) {
 	EncodeJSONResponse(result.Body, &result.Code, w)
 }
 
-// UserPost - 
+// UserPost -
 func (c *UserAPIController) UserPost(w http.ResponseWriter, r *http.Request) {
 	result, err := c.service.UserPost(r.Context())
 	// If an error occurred, encode the error with the status code
