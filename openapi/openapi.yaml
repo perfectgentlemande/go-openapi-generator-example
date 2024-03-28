@@ -1,11 +1,11 @@
 openapi: "3.0.0"
 info:
   version: 0.1.0
-  title: go-mongodb-crud-example
-  description: Example of REST API. Includes such things as MongoDB, slog, gorilla router etc... Some kind of a sample project API for educational purposes.
+  title: go-openapi-generator-example
+  description: Example of REST API. Includes such things as MongoDB, slog, gorilla mux etc... Some kind of a sample project API for educational purposes.
   contact:
     name: Artem Chaadaev
-    url: https://github.com/perfectgentlemande/go-mongodb-crud-example
+    url: https://github.com/perfectgentlemande/go-openapi-generator-example
 tags:
   - name: user
     description: "Operations with users"    
