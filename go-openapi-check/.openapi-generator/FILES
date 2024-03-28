@@ -1,0 +1,13 @@
+Dockerfile
+api/openapi.yaml
+openapi/api.go
+openapi/api_user.go
+openapi/api_user_service.go
+openapi/error.go
+openapi/helpers.go
+openapi/impl.go
+openapi/logger.go
+openapi/model_api_error.go
+openapi/model_created_item.go
+openapi/model_user.go
+openapi/routers.go

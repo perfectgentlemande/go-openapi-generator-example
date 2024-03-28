@@ -1,0 +1,209 @@
+openapi: 3.0.0
+info:
+  contact:
+    name: Artem Chaadaev
+    url: https://github.com/perfectgentlemande/go-openapi-generator-example
+  description: "Example of REST API. Includes such things as MongoDB, slog, gorilla\
+    \ mux etc... Some kind of a sample project API for educational purposes."
+  title: go-openapi-generator-example
+  version: 0.1.0
+servers:
+- url: /
+tags:
+- description: Operations with users
+  name: user
+paths:
+  /user:
+    get:
+      description: List of all users
+      parameters:
+      - description: Maximum number of users to return
+        explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          format: int64
+          type: integer
+        style: form
+      - description: Number of users to skip
+        explode: true
+        in: query
+        name: offset
+        required: false
+        schema:
+          format: int64
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/User'
+                type: array
+          description: List of users
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Unexpected error
+      tags:
+      - user
+    post:
+      description: Create user
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreatedItem'
+          description: Created user
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Unexpected error
+      tags:
+      - user
+  /user/{id}:
+    delete:
+      description: Delete user by ID
+      parameters:
+      - description: selected ID of user
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreatedItem'
+          description: Created user
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Unexpected error
+      tags:
+      - user
+    get:
+      description: Get user by ID
+      parameters:
+      - description: selected ID of user
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: Selected user
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Unexpected error
+      tags:
+      - user
+    put:
+      description: Update user by ID
+      parameters:
+      - description: selected ID of user
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: Updated user
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Unexpected error
+      tags:
+      - user
+components:
+  schemas:
+    APIError:
+      example:
+        message: message
+      properties:
+        message:
+          description: Error message
+          type: string
+      required:
+      - message
+      type: object
+    CreatedItem:
+      example:
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+      properties:
+        id:
+          description: New ID of created object
+          format: uuid
+          type: string
+      required:
+      - id
+      type: object
+    User:
+      example:
+        updated_at: 2000-01-23T04:56:07.000+00:00
+        created_at: 2000-01-23T04:56:07.000+00:00
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        email: email
+        username: username
+      properties:
+        id:
+          description: ID of user
+          format: uuid
+          type: string
+        username:
+          description: Username
+          type: string
+        email:
+          description: Email of user
+          type: string
+        created_at:
+          description: Date of user creation
+          format: date-time
+          type: string
+        updated_at:
+          description: Date of user update
+          format: date-time
+          type: string
+      required:
+      - created_at
+      - email
+      - id
+      - updated_at
+      - username
+      type: object
