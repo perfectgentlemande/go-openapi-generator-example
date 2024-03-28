@@ -1,5 +1,5 @@
-module github.com/GIT_USER_ID/GIT_REPO_ID
+module github.com/perfectgentlemande/go-openapi-generator-example
 
-go 1.18
+go 1.22.1
 
-require github.com/gorilla/mux v1.8.0
+require github.com/gorilla/mux v1.8.1
