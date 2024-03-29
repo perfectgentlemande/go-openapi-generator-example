@@ -10,16 +10,42 @@
 package main
 
 import (
+	"context"
 	"log"
 	"net/http"
 
 	openapi "github.com/perfectgentlemande/go-openapi-generator-example/openapi"
 )
 
+type Controller struct {
+}
+
+func (c *Controller) UserGet(context.Context, int64, int64) (openapi.ImplResponse, error) {
+	return openapi.ImplResponse{
+		Body: map[string]string{
+			"piska": "kakaha",
+		},
+		Code: 200,
+	}, nil
+}
+func (c *Controller) UserIdDelete(context.Context, string) (openapi.ImplResponse, error) {
+	return openapi.ImplResponse{}, nil
+}
+func (c *Controller) UserIdGet(context.Context, string) (openapi.ImplResponse, error) {
+	return openapi.ImplResponse{}, nil
+}
+func (c *Controller) UserIdPut(context.Context, string) (openapi.ImplResponse, error) {
+	return openapi.ImplResponse{}, nil
+}
+func (c *Controller) UserPost(context.Context) (openapi.ImplResponse, error) {
+	return openapi.ImplResponse{}, nil
+}
+
 func main() {
 	log.Printf("Server started")
 
-	UserAPIService := openapi.NewUserAPIService()
+	// UserAPIService := openapi.NewUserAPIService()
+	UserAPIService := &Controller{}
 	UserAPIController := openapi.NewUserAPIController(UserAPIService)
 
 	router := openapi.NewRouter(UserAPIController)
