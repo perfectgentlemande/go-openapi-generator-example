@@ -14,31 +14,63 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/google/uuid"
 	openapi "github.com/perfectgentlemande/go-openapi-generator-example/openapi"
 )
 
 type Controller struct {
 }
 
-func (c *Controller) UserGet(context.Context, int64, int64) (openapi.ImplResponse, error) {
+func (c *Controller) UserGet(ctx context.Context, limit int64, offset int64) (openapi.ImplResponse, error) {
 	return openapi.ImplResponse{
-		Body: map[string]string{
-			"piska": "kakaha",
+		Body: []openapi.User{
+			{
+				Id:       uuid.NewString(),
+				Username: "alice01",
+			},
+			{
+				Id:       uuid.NewString(),
+				Username: "bob01",
+			},
 		},
 		Code: 200,
 	}, nil
 }
-func (c *Controller) UserIdDelete(context.Context, string) (openapi.ImplResponse, error) {
-	return openapi.ImplResponse{}, nil
+func (c *Controller) UserIdDelete(ctx context.Context, id string) (openapi.ImplResponse, error) {
+	return openapi.ImplResponse{
+		Body: openapi.User{
+			Id:       uuid.NewString(),
+			Username: "alice01",
+		},
+		Code: 200,
+	}, nil
 }
-func (c *Controller) UserIdGet(context.Context, string) (openapi.ImplResponse, error) {
-	return openapi.ImplResponse{}, nil
+func (c *Controller) UserIdGet(ctx context.Context, id string) (openapi.ImplResponse, error) {
+	return openapi.ImplResponse{
+		Body: openapi.User{
+			Id:       uuid.NewString(),
+			Username: "alice01",
+		},
+		Code: 200,
+	}, nil
 }
-func (c *Controller) UserIdPut(context.Context, string) (openapi.ImplResponse, error) {
-	return openapi.ImplResponse{}, nil
+func (c *Controller) UserIdPut(ctx context.Context, id string) (openapi.ImplResponse, error) {
+	return openapi.ImplResponse{
+		Body: openapi.User{
+			Id:       uuid.NewString(),
+			Username: "alice01",
+		},
+		Code: 200,
+	}, nil
 }
-func (c *Controller) UserPost(context.Context) (openapi.ImplResponse, error) {
-	return openapi.ImplResponse{}, nil
+func (c *Controller) UserPost(ctx context.Context) (openapi.ImplResponse, error) {
+	return openapi.ImplResponse{
+		Body: openapi.User{
+			Id:       uuid.NewString(),
+			Username: "alice01",
+		},
+		Code: 200,
+	}, nil
 }
 
 func main() {
