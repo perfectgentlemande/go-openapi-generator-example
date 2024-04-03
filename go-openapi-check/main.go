@@ -11,13 +11,12 @@ package main
 
 import (
 	"context"
-	"log"
-	"log/slog"
 	"net/http"
 	"os"
 
 	"github.com/google/uuid"
 	openapi "github.com/perfectgentlemande/go-openapi-generator-example/openapi"
+	"github.com/rs/zerolog"
 )
 
 type Controller struct {
@@ -76,17 +75,13 @@ func (c *Controller) UserPost(ctx context.Context) (openapi.ImplResponse, error)
 }
 
 func main() {
-	opts := &slog.HandlerOptions{
-		Level: slog.LevelInfo,
-	}
-	handler := slog.NewJSONHandler(os.Stdout, opts)
-	logger := slog.New(handler)
+	log := zerolog.New(os.Stdout).With().Timestamp().Logger()
 
 	UserAPIService := &Controller{}
 	UserAPIController := openapi.NewUserAPIController(UserAPIService)
 
 	router := openapi.NewRouter(UserAPIController)
 
-	logger.Info("Server starting", "addr", ":8000")
-	log.Fatal(http.ListenAndServe(":8080", router))
+	log.Info().Str("addr", ":8000").Msg("Server starting")
+	log.Fatal().Err(http.ListenAndServe(":8080", router)).Msg("failed to listen")
 }
