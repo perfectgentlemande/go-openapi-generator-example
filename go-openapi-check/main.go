@@ -79,8 +79,7 @@ func (c *Controller) UserPost(ctx context.Context) (openapi.ImplResponse, error)
 func main() {
 	log := zerolog.New(os.Stdout).With().Timestamp().Logger()
 
-	osSignCh := make(chan os.Signal)
-	signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT)
+	ctx, _ := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT, syscall.SIGKILL)
 
 	UserAPIService := &Controller{}
 	UserAPIController := openapi.NewUserAPIController(UserAPIService)
@@ -92,5 +91,6 @@ func main() {
 		log.Fatal().Err(http.ListenAndServe(":8080", router)).Msg("failed to listen")
 	}()
 
-	<-osSignCh
+	<-ctx.Done()
+	log.Info().Msg("caught os signal")
 }
