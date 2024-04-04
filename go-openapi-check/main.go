@@ -13,6 +13,8 @@ import (
 	"context"
 	"net/http"
 	"os"
+	"os/signal"
+	"syscall"
 
 	"github.com/google/uuid"
 	openapi "github.com/perfectgentlemande/go-openapi-generator-example/openapi"
@@ -77,11 +79,18 @@ func (c *Controller) UserPost(ctx context.Context) (openapi.ImplResponse, error)
 func main() {
 	log := zerolog.New(os.Stdout).With().Timestamp().Logger()
 
+	osSignCh := make(chan os.Signal)
+	signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT)
+
 	UserAPIService := &Controller{}
 	UserAPIController := openapi.NewUserAPIController(UserAPIService)
 
 	router := openapi.NewRouter(UserAPIController)
 
-	log.Info().Str("addr", ":8000").Msg("Server starting")
-	log.Fatal().Err(http.ListenAndServe(":8080", router)).Msg("failed to listen")
+	go func() {
+		log.Info().Str("addr", ":8000").Msg("Server starting")
+		log.Fatal().Err(http.ListenAndServe(":8080", router)).Msg("failed to listen")
+	}()
+
+	<-osSignCh
 }
