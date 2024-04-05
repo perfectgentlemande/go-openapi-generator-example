@@ -86,9 +86,14 @@ func main() {
 
 	router := openapi.NewRouter(UserAPIController)
 
+	srv := &http.Server{
+		Addr:    ":8080",
+		Handler: router,
+	}
+
 	go func() {
-		log.Info().Str("addr", ":8000").Msg("Server starting")
-		log.Fatal().Err(http.ListenAndServe(":8080", router)).Msg("failed to listen")
+		log.Info().Str("addr", ":8080").Msg("Server starting")
+		log.Fatal().Err(srv.ListenAndServe()).Msg("failed to listen")
 	}()
 
 	<-ctx.Done()
