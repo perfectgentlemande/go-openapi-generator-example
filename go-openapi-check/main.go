@@ -14,6 +14,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"sync"
 	"syscall"
 
 	"github.com/google/uuid"
@@ -91,11 +92,33 @@ func main() {
 		Handler: router,
 	}
 
+	wg := &sync.WaitGroup{}
+	wg.Add(2)
+
 	go func() {
-		log.Info().Str("addr", ":8080").Msg("Server starting")
-		log.Fatal().Err(srv.ListenAndServe()).Msg("failed to listen")
+		defer wg.Done()
+
+		log.Info().Str("addr", ":8080").Msg("server starting")
+		err := srv.ListenAndServe()
+		if err != nil {
+			log.Err(err).Msg("caught server listenAndServe error")
+		} else {
+			log.Info().Msg("no error after listen and serve")
+		}
+	}()
+	go func() {
+		defer wg.Done()
+
+		<-ctx.Done()
+		log.Info().Msg("caught os signal: server will be shut down")
+
+		err := srv.Shutdown(context.Background())
+		if err != nil {
+			log.Err(err).Msg("caught server shutdown error")
+		} else {
+			log.Info().Msg("server shutdown successful")
+		}
 	}()
 
-	<-ctx.Done()
-	log.Info().Msg("caught os signal")
+	wg.Wait()
 }
