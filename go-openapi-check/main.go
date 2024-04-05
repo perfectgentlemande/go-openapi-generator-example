@@ -11,11 +11,13 @@ package main
 
 import (
 	"context"
+	"errors"
 	"net/http"
 	"os"
 	"os/signal"
 	"sync"
 	"syscall"
+	"time"
 
 	"github.com/google/uuid"
 	openapi "github.com/perfectgentlemande/go-openapi-generator-example/openapi"
@@ -80,7 +82,7 @@ func (c *Controller) UserPost(ctx context.Context) (openapi.ImplResponse, error)
 func main() {
 	log := zerolog.New(os.Stdout).With().Timestamp().Logger()
 
-	ctx, _ := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT, syscall.SIGKILL)
+	signalCtx, _ := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT, syscall.SIGKILL)
 
 	UserAPIService := &Controller{}
 	UserAPIController := openapi.NewUserAPIController(UserAPIService)
@@ -94,25 +96,26 @@ func main() {
 
 	wg := &sync.WaitGroup{}
 	wg.Add(2)
+	timeoutCtx, _ := context.WithTimeout(context.Background(), 15*time.Second)
 
 	go func() {
 		defer wg.Done()
 
 		log.Info().Str("addr", ":8080").Msg("server starting")
 		err := srv.ListenAndServe()
-		if err != nil {
+		if err != nil && !errors.Is(err, http.ErrServerClosed) {
 			log.Err(err).Msg("caught server listenAndServe error")
 		} else {
-			log.Info().Msg("no error after listen and serve")
+			log.Info().Msg("listenAndServe successfully aborted")
 		}
 	}()
 	go func() {
 		defer wg.Done()
 
-		<-ctx.Done()
+		<-signalCtx.Done()
 		log.Info().Msg("caught os signal: server will be shut down")
 
-		err := srv.Shutdown(context.Background())
+		err := srv.Shutdown(timeoutCtx)
 		if err != nil {
 			log.Err(err).Msg("caught server shutdown error")
 		} else {
