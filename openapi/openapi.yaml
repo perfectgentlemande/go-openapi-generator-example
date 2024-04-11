@@ -49,6 +49,13 @@ paths:
       description: "Create user"   
       tags:
         - user
+      requestBody:
+        description: "User to create"
+        required: true
+        content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/User"
       responses:
         "200":
           description: "Created user"
@@ -100,6 +107,13 @@ paths:
           schema:
             type: string
             format: uuid  
+      requestBody:
+        description: "User to put"
+        required: true
+        content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/User"
       responses:
         "200":
           description: "Updated user"

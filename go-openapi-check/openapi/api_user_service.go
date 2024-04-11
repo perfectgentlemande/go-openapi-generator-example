@@ -69,7 +69,7 @@ func (s *UserAPIService) UserIdGet(ctx context.Context, id string) (ImplResponse
 }
 
 // UserIdPut - 
-func (s *UserAPIService) UserIdPut(ctx context.Context, id string) (ImplResponse, error) {
+func (s *UserAPIService) UserIdPut(ctx context.Context, id string, user User) (ImplResponse, error) {
 	// TODO - update UserIdPut with the required logic for this service method.
 	// Add api_user_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
 
@@ -83,7 +83,7 @@ func (s *UserAPIService) UserIdPut(ctx context.Context, id string) (ImplResponse
 }
 
 // UserPost - 
-func (s *UserAPIService) UserPost(ctx context.Context) (ImplResponse, error) {
+func (s *UserAPIService) UserPost(ctx context.Context, user User) (ImplResponse, error) {
 	// TODO - update UserPost with the required logic for this service method.
 	// Add api_user_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
 

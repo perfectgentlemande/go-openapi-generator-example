@@ -15,5 +15,5 @@ Use this command:
     -i /local/openapi/openapi.yaml \
     -g go-server \
     -o /local/go-openapi-check \
-    --openapi-generator-ignore-list controller.go,main.go,README.md,go.mod,internal \
+    --openapi-generator-ignore-list main.go,README.md,go.mod,internal \
     -c /local/openapi/generate-config.yaml`

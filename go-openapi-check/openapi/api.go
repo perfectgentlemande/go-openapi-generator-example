@@ -36,6 +36,6 @@ type UserAPIServicer interface {
 	UserGet(context.Context, int64, int64) (ImplResponse, error)
 	UserIdDelete(context.Context, string) (ImplResponse, error)
 	UserIdGet(context.Context, string) (ImplResponse, error)
-	UserIdPut(context.Context, string) (ImplResponse, error)
-	UserPost(context.Context) (ImplResponse, error)
+	UserIdPut(context.Context, string, User) (ImplResponse, error)
+	UserPost(context.Context, User) (ImplResponse, error)
 }

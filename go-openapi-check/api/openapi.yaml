@@ -54,6 +54,13 @@ paths:
       - user
     post:
       description: Create user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+        description: User to create
+        required: true
       responses:
         "200":
           content:
@@ -136,6 +143,13 @@ paths:
           format: uuid
           type: string
         style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+        description: User to put
+        required: true
       responses:
         "200":
           content:
