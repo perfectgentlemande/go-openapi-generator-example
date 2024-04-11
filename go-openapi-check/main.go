@@ -19,7 +19,7 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/perfectgentlemande/go-openapi-generator-example/internal/openapi"
+	"github.com/perfectgentlemande/go-openapi-generator-example/internal/api"
 	openapi "github.com/perfectgentlemande/go-openapi-generator-example/openapi"
 	"github.com/rs/zerolog"
 )
