@@ -1,4 +1,4 @@
-package main
+package api
 
 import (
 	"context"
@@ -8,7 +8,6 @@ import (
 )
 
 type Controller struct {
-	Service
 }
 
 func (c *Controller) UserGet(ctx context.Context, limit int64, offset int64) (openapi.ImplResponse, error) {

@@ -19,6 +19,7 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/perfectgentlemande/go-openapi-generator-example/internal/openapi"
 	openapi "github.com/perfectgentlemande/go-openapi-generator-example/openapi"
 	"github.com/rs/zerolog"
 )
@@ -28,7 +29,7 @@ func main() {
 
 	signalCtx, _ := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT, syscall.SIGKILL)
 
-	UserAPIService := &Controller{}
+	UserAPIService := &api.Controller{}
 	UserAPIController := openapi.NewUserAPIController(UserAPIService)
 
 	router := openapi.NewRouter(UserAPIController)
