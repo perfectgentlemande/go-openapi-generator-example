@@ -2,27 +2,40 @@ package api
 
 import (
 	"context"
+	"net/http"
 
+	"github.com/perfectgentlemande/go-openapi-generator-example/internal/logger"
 	"github.com/perfectgentlemande/go-openapi-generator-example/internal/service"
 	openapi "github.com/perfectgentlemande/go-openapi-generator-example/openapi"
+	"github.com/rs/zerolog"
 )
 
 type Controller struct {
+	log  *zerolog.Logger
 	srvc *service.Service
 }
 
 func (c *Controller) UserGet(ctx context.Context, limit int64, offset int64) (openapi.ImplResponse, error) {
+	reqData := openapi.RequestDataFromContext(ctx)
+	log := logger.NewRequestLogger(c.log, reqData.Method, reqData.Path, reqData.ID)
+
 	users, err := c.srvc.ListUsers(ctx, &service.ListUsersParams{
 		Limit:  &limit,
 		Offset: &offset,
 	})
 	if err != nil {
-
+		log.Error().Err(err).Msg("cannot list users")
+		return openapi.ImplResponse{
+			Body: openapi.ApiError{
+				Message: http.StatusText(http.StatusInternalServerError),
+			},
+			Code: http.StatusInternalServerError,
+		}, nil
 	}
 
 	return openapi.ImplResponse{
 		Body: usersFromService(users),
-		Code: 200,
+		Code: http.StatusOK,
 	}, nil
 }
 func (c *Controller) UserIdDelete(ctx context.Context, id string) (openapi.ImplResponse, error) {
@@ -35,7 +48,7 @@ func (c *Controller) UserIdDelete(ctx context.Context, id string) (openapi.ImplR
 		Body: openapi.CreatedItem{
 			Id: id,
 		},
-		Code: 200,
+		Code: http.StatusOK,
 	}, nil
 }
 func (c *Controller) UserIdGet(ctx context.Context, id string) (openapi.ImplResponse, error) {
@@ -46,7 +59,7 @@ func (c *Controller) UserIdGet(ctx context.Context, id string) (openapi.ImplResp
 
 	return openapi.ImplResponse{
 		Body: userFromService(&user),
-		Code: 200,
+		Code: http.StatusOK,
 	}, nil
 }
 func (c *Controller) UserIdPut(ctx context.Context, id string, user openapi.User) (openapi.ImplResponse, error) {
@@ -57,7 +70,7 @@ func (c *Controller) UserIdPut(ctx context.Context, id string, user openapi.User
 
 	return openapi.ImplResponse{
 		Body: userFromService(&updatedUser),
-		Code: 200,
+		Code: http.StatusOK,
 	}, nil
 }
 func (c *Controller) UserPost(ctx context.Context, user openapi.User) (openapi.ImplResponse, error) {
@@ -70,6 +83,6 @@ func (c *Controller) UserPost(ctx context.Context, user openapi.User) (openapi.I
 		Body: openapi.CreatedItem{
 			Id: id,
 		},
-		Code: 200,
+		Code: http.StatusOK,
 	}, nil
 }

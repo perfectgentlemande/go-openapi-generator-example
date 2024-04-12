@@ -10,16 +10,39 @@
 package openapi
 
 import (
+	"context"
 	"log"
 	"net/http"
 	"time"
+
+	"github.com/google/uuid"
 )
+
+// this thing is heavily rebuild and I don't think it's a good idea
+// if you want more control on logging use other library or framework to generate
+type RequestData struct {
+	ID     string
+	Method string
+	Path   string
+}
+
+type reqDataCtxKey struct{}
+
+func RequestDataFromContext(ctx context.Context) RequestData {
+	reqData, _ := ctx.Value(reqDataCtxKey{}).(RequestData)
+
+	return reqData
+}
 
 func Logger(inner http.Handler, name string) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		start := time.Now()
 
-		inner.ServeHTTP(w, r)
+		inner.ServeHTTP(w, r.WithContext(context.WithValue(r.Context(), reqDataCtxKey{}, RequestData{
+			ID:     uuid.NewString(),
+			Method: r.Method,
+			Path:   r.URL.Path,
+		})))
 
 		log.Printf(
 			"%s %s %s %s",
