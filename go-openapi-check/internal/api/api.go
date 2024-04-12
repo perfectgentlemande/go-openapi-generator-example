@@ -39,11 +39,19 @@ func (c *Controller) UserGet(ctx context.Context, limit int64, offset int64) (op
 	}, nil
 }
 func (c *Controller) UserIdDelete(ctx context.Context, id string) (openapi.ImplResponse, error) {
+	reqData := openapi.RequestDataFromContext(ctx)
+	log := logger.NewRequestLogger(c.log, reqData.Method, reqData.Path, reqData.ID)
+
 	err := c.srvc.DeleteUserByID(ctx, id)
 	if err != nil {
-
+		log.Error().Err(err).Str("id", id).Msg("cannot delete user by id")
+		return openapi.ImplResponse{
+			Body: openapi.ApiError{
+				Message: http.StatusText(http.StatusInternalServerError),
+			},
+			Code: http.StatusInternalServerError,
+		}, nil
 	}
-
 	return openapi.ImplResponse{
 		Body: openapi.CreatedItem{
 			Id: id,
@@ -52,9 +60,18 @@ func (c *Controller) UserIdDelete(ctx context.Context, id string) (openapi.ImplR
 	}, nil
 }
 func (c *Controller) UserIdGet(ctx context.Context, id string) (openapi.ImplResponse, error) {
+	reqData := openapi.RequestDataFromContext(ctx)
+	log := logger.NewRequestLogger(c.log, reqData.Method, reqData.Path, reqData.ID)
+
 	user, err := c.srvc.GetUserByID(ctx, id)
 	if err != nil {
-
+		log.Error().Err(err).Str("id", id).Msg("cannot get user by id")
+		return openapi.ImplResponse{
+			Body: openapi.ApiError{
+				Message: http.StatusText(http.StatusInternalServerError),
+			},
+			Code: http.StatusInternalServerError,
+		}, nil
 	}
 
 	return openapi.ImplResponse{
@@ -63,9 +80,18 @@ func (c *Controller) UserIdGet(ctx context.Context, id string) (openapi.ImplResp
 	}, nil
 }
 func (c *Controller) UserIdPut(ctx context.Context, id string, user openapi.User) (openapi.ImplResponse, error) {
+	reqData := openapi.RequestDataFromContext(ctx)
+	log := logger.NewRequestLogger(c.log, reqData.Method, reqData.Path, reqData.ID)
+
 	updatedUser, err := c.srvc.UpdateUserByID(ctx, id, userToService(&user))
 	if err != nil {
-
+		log.Error().Err(err).Str("id", id).Msg("cannot update user by id")
+		return openapi.ImplResponse{
+			Body: openapi.ApiError{
+				Message: http.StatusText(http.StatusInternalServerError),
+			},
+			Code: http.StatusInternalServerError,
+		}, nil
 	}
 
 	return openapi.ImplResponse{
@@ -74,9 +100,18 @@ func (c *Controller) UserIdPut(ctx context.Context, id string, user openapi.User
 	}, nil
 }
 func (c *Controller) UserPost(ctx context.Context, user openapi.User) (openapi.ImplResponse, error) {
+	reqData := openapi.RequestDataFromContext(ctx)
+	log := logger.NewRequestLogger(c.log, reqData.Method, reqData.Path, reqData.ID)
+
 	id, err := c.srvc.CreateUser(ctx, userToService(&user))
 	if err != nil {
-
+		log.Error().Err(err).Msg("cannot create user")
+		return openapi.ImplResponse{
+			Body: openapi.ApiError{
+				Message: http.StatusText(http.StatusInternalServerError),
+			},
+			Code: http.StatusInternalServerError,
+		}, nil
 	}
 
 	return openapi.ImplResponse{
