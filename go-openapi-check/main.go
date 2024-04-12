@@ -20,6 +20,8 @@ import (
 	"time"
 
 	"github.com/perfectgentlemande/go-openapi-generator-example/internal/api"
+	dbuser "github.com/perfectgentlemande/go-openapi-generator-example/internal/database"
+	"github.com/perfectgentlemande/go-openapi-generator-example/internal/service"
 	openapi "github.com/perfectgentlemande/go-openapi-generator-example/openapi"
 	"github.com/rs/zerolog"
 )
@@ -27,9 +29,25 @@ import (
 func main() {
 	log := zerolog.New(os.Stdout).With().Timestamp().Logger()
 
-	signalCtx, _ := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT, syscall.SIGKILL)
+	signalCtx, _ := signal.NotifyContext(context.Background(),
+		syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT, syscall.SIGKILL)
 
-	UserAPIService := &api.Controller{}
+	dbUser, err := dbuser.NewDatabase(signalCtx, &dbuser.Config{
+		DBName:  "dbuser",
+		ConnStr: "mongodb://mongodb-0:27017",
+	})
+	if err != nil {
+		log.Fatal().Err(err).Msg("cannot connect to database")
+	}
+	defer dbUser.Close(signalCtx)
+
+	err = dbUser.Ping(signalCtx)
+	if err != nil {
+		log.Fatal().Err(err).Msg("cannot ping db")
+	}
+
+	UserAPIService := api.New(service.NewService(dbUser), &log)
+
 	UserAPIController := openapi.NewUserAPIController(UserAPIService)
 
 	router := openapi.NewRouter(UserAPIController)

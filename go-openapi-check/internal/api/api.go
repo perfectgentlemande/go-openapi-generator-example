@@ -15,6 +15,13 @@ type Controller struct {
 	srvc *service.Service
 }
 
+func New(srvc *service.Service, log *zerolog.Logger) *Controller {
+	return &Controller{
+		srvc: srvc,
+		log:  log,
+	}
+}
+
 func (c *Controller) UserGet(ctx context.Context, limit int64, offset int64) (openapi.ImplResponse, error) {
 	reqData := openapi.RequestDataFromContext(ctx)
 	log := logger.NewRequestLogger(c.log, reqData.Method, reqData.Path, reqData.ID)
@@ -38,6 +45,7 @@ func (c *Controller) UserGet(ctx context.Context, limit int64, offset int64) (op
 		Code: http.StatusOK,
 	}, nil
 }
+
 func (c *Controller) UserIdDelete(ctx context.Context, id string) (openapi.ImplResponse, error) {
 	reqData := openapi.RequestDataFromContext(ctx)
 	log := logger.NewRequestLogger(c.log, reqData.Method, reqData.Path, reqData.ID)
@@ -59,6 +67,7 @@ func (c *Controller) UserIdDelete(ctx context.Context, id string) (openapi.ImplR
 		Code: http.StatusOK,
 	}, nil
 }
+
 func (c *Controller) UserIdGet(ctx context.Context, id string) (openapi.ImplResponse, error) {
 	reqData := openapi.RequestDataFromContext(ctx)
 	log := logger.NewRequestLogger(c.log, reqData.Method, reqData.Path, reqData.ID)
@@ -79,6 +88,7 @@ func (c *Controller) UserIdGet(ctx context.Context, id string) (openapi.ImplResp
 		Code: http.StatusOK,
 	}, nil
 }
+
 func (c *Controller) UserIdPut(ctx context.Context, id string, user openapi.User) (openapi.ImplResponse, error) {
 	reqData := openapi.RequestDataFromContext(ctx)
 	log := logger.NewRequestLogger(c.log, reqData.Method, reqData.Path, reqData.ID)
@@ -99,6 +109,7 @@ func (c *Controller) UserIdPut(ctx context.Context, id string, user openapi.User
 		Code: http.StatusOK,
 	}, nil
 }
+
 func (c *Controller) UserPost(ctx context.Context, user openapi.User) (openapi.ImplResponse, error) {
 	reqData := openapi.RequestDataFromContext(ctx)
 	log := logger.NewRequestLogger(c.log, reqData.Method, reqData.Path, reqData.ID)
