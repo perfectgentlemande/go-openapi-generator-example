@@ -5,6 +5,20 @@ import (
 	"github.com/perfectgentlemande/go-openapi-generator-example/openapi"
 )
 
+func userToService(u *openapi.User) *service.User {
+	if u == nil {
+		return nil
+	}
+
+	return &service.User{
+		ID:        u.Id,
+		Username:  u.Username,
+		Email:     u.Email,
+		CreatedAt: u.CreatedAt,
+		UpdatedAt: u.UpdatedAt,
+	}
+}
+
 func userFromService(u *service.User) openapi.User {
 	if u == nil {
 		return openapi.User{}

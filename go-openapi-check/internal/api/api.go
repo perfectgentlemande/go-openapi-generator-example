@@ -3,7 +3,6 @@ package api
 import (
 	"context"
 
-	"github.com/google/uuid"
 	"github.com/perfectgentlemande/go-openapi-generator-example/internal/service"
 	openapi "github.com/perfectgentlemande/go-openapi-generator-example/openapi"
 )
@@ -27,10 +26,14 @@ func (c *Controller) UserGet(ctx context.Context, limit int64, offset int64) (op
 	}, nil
 }
 func (c *Controller) UserIdDelete(ctx context.Context, id string) (openapi.ImplResponse, error) {
+	err := c.srvc.DeleteUserByID(ctx, id)
+	if err != nil {
+
+	}
+
 	return openapi.ImplResponse{
-		Body: openapi.User{
-			Id:       uuid.NewString(),
-			Username: "alice01",
+		Body: openapi.CreatedItem{
+			Id: id,
 		},
 		Code: 200,
 	}, nil
@@ -46,20 +49,26 @@ func (c *Controller) UserIdGet(ctx context.Context, id string) (openapi.ImplResp
 		Code: 200,
 	}, nil
 }
-func (c *Controller) UserIdPut(ctx context.Context, id string) (openapi.ImplResponse, error) {
+func (c *Controller) UserIdPut(ctx context.Context, id string, user openapi.User) (openapi.ImplResponse, error) {
+	updatedUser, err := c.srvc.UpdateUserByID(ctx, id, userToService(&user))
+	if err != nil {
+
+	}
+
 	return openapi.ImplResponse{
-		Body: openapi.User{
-			Id:       uuid.NewString(),
-			Username: "alice01",
-		},
+		Body: userFromService(&updatedUser),
 		Code: 200,
 	}, nil
 }
-func (c *Controller) UserPost(ctx context.Context) (openapi.ImplResponse, error) {
+func (c *Controller) UserPost(ctx context.Context, user openapi.User) (openapi.ImplResponse, error) {
+	id, err := c.srvc.CreateUser(ctx, userToService(&user))
+	if err != nil {
+
+	}
+
 	return openapi.ImplResponse{
-		Body: openapi.User{
-			Id:       uuid.NewString(),
-			Username: "alice01",
+		Body: openapi.CreatedItem{
+			Id: id,
 		},
 		Code: 200,
 	}, nil
