@@ -1,4 +1,4 @@
-FROM golang:1.19 AS build
+FROM golang:1.22 AS build
 WORKDIR /go/src
 COPY openapi ./openapi
 COPY main.go .
