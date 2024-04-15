@@ -1,0 +1,26 @@
+version: "3.9"
+
+services:
+  go-mongodb-app:
+    build: .
+    networks:
+      - db_network
+    depends_on:
+      - mongodb
+    ports:
+      - "8080:80"
+  mongodb:
+    image: mongo:6.0.14
+    volumes:
+      - "mongo-vol:/data/db"
+      - "mongo-vol:/data/configdb"
+    ports:
+      - "27017:27017"
+    networks:
+      - db_network
+
+volumes:
+  mongo-vol:
+  mongo-config-vol:
+networks:
+  db_network:  

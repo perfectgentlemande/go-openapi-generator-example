@@ -1,15 +1,10 @@
 FROM golang:1.22 AS build
-WORKDIR /go/src
-COPY openapi ./openapi
-COPY main.go .
-COPY go.sum .
-COPY go.mod .
 
-ENV CGO_ENABLED=0
+ADD . /app
+WORKDIR /app
+RUN GOOS=linux GOARCH=amd64 go build -o go-mongodb-app ./cmd/go-mongodb-crud-api-example
 
-RUN go build -o openapi .
-
-FROM scratch AS runtime
-COPY --from=build /go/src/openapi ./
-EXPOSE 8080/tcp
-ENTRYPOINT ["./openapi"]
+FROM alpine:3.19 AS app
+WORKDIR /app
+COPY --from=builder /app/go-mongodb-app /app
+CMD ["/app/go-mongodb-app"]
