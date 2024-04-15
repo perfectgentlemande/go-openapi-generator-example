@@ -34,7 +34,7 @@ func main() {
 
 	dbUser, err := dbuser.NewDatabase(signalCtx, &dbuser.Config{
 		DBName:  "dbuser",
-		ConnStr: "mongodb://mongodb-0:27017",
+		ConnStr: "mongodb://mongodb:27017",
 	})
 	if err != nil {
 		log.Fatal().Err(err).Msg("cannot connect to database")
