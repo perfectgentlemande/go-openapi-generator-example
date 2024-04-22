@@ -64,7 +64,7 @@ func main() {
 	go func() {
 		defer wg.Done()
 
-		log.Info().Str("addr", ":8080").Msg("server starting")
+		log.Info().Str("addr", ":80").Msg("server starting")
 		err := srv.ListenAndServe()
 		if err != nil && !errors.Is(err, http.ErrServerClosed) {
 			log.Err(err).Msg("caught server listenAndServe error")
