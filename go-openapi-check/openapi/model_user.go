@@ -19,7 +19,7 @@ import (
 type User struct {
 
 	// ID of user
-	Id string `json:"id"`
+	Id string `json:"id,omitempty"`
 
 	// Username
 	Username string `json:"username"`
@@ -28,20 +28,17 @@ type User struct {
 	Email string `json:"email"`
 
 	// Date of user creation
-	CreatedAt time.Time `json:"created_at"`
+	CreatedAt time.Time `json:"created_at,omitempty"`
 
 	// Date of user update
-	UpdatedAt time.Time `json:"updated_at"`
+	UpdatedAt time.Time `json:"updated_at,omitempty"`
 }
 
 // AssertUserRequired checks if the required fields are not zero-ed
 func AssertUserRequired(obj User) error {
 	elements := map[string]interface{}{
-		"id": obj.Id,
 		"username": obj.Username,
 		"email": obj.Email,
-		"created_at": obj.CreatedAt,
-		"updated_at": obj.UpdatedAt,
 	}
 	for name, el := range elements {
 		if isZero := IsZeroValue(el); isZero {

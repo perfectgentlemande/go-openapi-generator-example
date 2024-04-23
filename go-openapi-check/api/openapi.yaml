@@ -215,9 +215,6 @@ components:
           format: date-time
           type: string
       required:
-      - created_at
       - email
-      - id
-      - updated_at
       - username
       type: object
