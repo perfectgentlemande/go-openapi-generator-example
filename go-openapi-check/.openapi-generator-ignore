@@ -33,7 +33,7 @@
 docker-compose.yaml
 Dockerfile
 openapi/logger.go
-internal
+internal/openapi/logger.go
 go.mod
 main.go
 cmd

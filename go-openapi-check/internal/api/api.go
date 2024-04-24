@@ -5,8 +5,8 @@ import (
 	"net/http"
 
 	"github.com/perfectgentlemande/go-openapi-generator-example/internal/logger"
+	"github.com/perfectgentlemande/go-openapi-generator-example/internal/openapi"
 	"github.com/perfectgentlemande/go-openapi-generator-example/internal/service"
-	openapi "github.com/perfectgentlemande/go-openapi-generator-example/openapi"
 	"github.com/rs/zerolog"
 )
 

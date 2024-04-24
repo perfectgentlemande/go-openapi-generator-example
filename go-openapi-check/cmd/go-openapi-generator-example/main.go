@@ -12,8 +12,8 @@ import (
 
 	"github.com/perfectgentlemande/go-openapi-generator-example/internal/api"
 	dbuser "github.com/perfectgentlemande/go-openapi-generator-example/internal/database"
+	"github.com/perfectgentlemande/go-openapi-generator-example/internal/openapi"
 	"github.com/perfectgentlemande/go-openapi-generator-example/internal/service"
-	openapi "github.com/perfectgentlemande/go-openapi-generator-example/openapi"
 	"github.com/rs/zerolog"
 )
 

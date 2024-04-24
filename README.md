@@ -15,5 +15,5 @@ Use this command:
     -i /local/openapi/openapi.yaml \
     -g go-server \
     -o /local/go-openapi-check \
-    --openapi-generator-ignore-list cmd,README.md,go.mod,internal,Dockerfile,docker-compose.yaml,main.go,openapi/logger.go \
+    --openapi-generator-ignore-list cmd,README.md,go.mod,Dockerfile,docker-compose.yaml,main.go,openapi/logger.go,internal/openapi/logger.go \
     -c /local/openapi/generate-config.yaml`

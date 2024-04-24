@@ -1,8 +1,8 @@
 package api
 
 import (
+	"github.com/perfectgentlemande/go-openapi-generator-example/internal/openapi"
 	"github.com/perfectgentlemande/go-openapi-generator-example/internal/service"
-	"github.com/perfectgentlemande/go-openapi-generator-example/openapi"
 )
 
 func userToService(u *openapi.User) *service.User {
