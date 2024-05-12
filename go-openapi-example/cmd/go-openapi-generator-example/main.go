@@ -10,6 +10,7 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/joho/godotenv"
 	"github.com/perfectgentlemande/go-openapi-generator-example/internal/api"
 	dbuser "github.com/perfectgentlemande/go-openapi-generator-example/internal/database"
 	"github.com/perfectgentlemande/go-openapi-generator-example/internal/openapi"
@@ -22,6 +23,11 @@ func main() {
 
 	signalCtx, _ := signal.NotifyContext(context.Background(),
 		syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT, syscall.SIGKILL)
+
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal().Err(err).Msg("cannot load .env file")
+	}
 
 	dbUser, err := dbuser.NewDatabase(signalCtx, &dbuser.Config{
 		DBName:  "dbuser",

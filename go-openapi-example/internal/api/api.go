@@ -15,6 +15,10 @@ type Controller struct {
 	srvc *service.Service
 }
 
+type Config struct {
+	Addr string
+}
+
 func New(srvc *service.Service, log *zerolog.Logger) *Controller {
 	return &Controller{
 		srvc: srvc,

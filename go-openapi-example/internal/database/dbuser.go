@@ -10,8 +10,8 @@ import (
 )
 
 type Config struct {
-	DBName  string `yaml:"dbname"`
-	ConnStr string `yaml:"connstr"`
+	DBName  string
+	ConnStr string
 }
 
 type Database struct {
