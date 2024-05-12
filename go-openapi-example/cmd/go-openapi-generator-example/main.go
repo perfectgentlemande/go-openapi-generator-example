@@ -10,7 +10,6 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/joho/godotenv"
 	"github.com/perfectgentlemande/go-openapi-generator-example/internal/api"
 	dbuser "github.com/perfectgentlemande/go-openapi-generator-example/internal/database"
 	"github.com/perfectgentlemande/go-openapi-generator-example/internal/openapi"
@@ -24,14 +23,14 @@ func main() {
 	signalCtx, _ := signal.NotifyContext(context.Background(),
 		syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT, syscall.SIGKILL)
 
-	err := godotenv.Load()
+	conf, err := readConfig()
 	if err != nil {
-		log.Fatal().Err(err).Msg("cannot load .env file")
+		log.Fatal().Err(err).Msg("cannot read config")
 	}
 
 	dbUser, err := dbuser.NewDatabase(signalCtx, &dbuser.Config{
-		DBName:  "dbuser",
-		ConnStr: "mongodb://mongodb:27017",
+		DBName:  conf.DBUser.DBName,
+		ConnStr: conf.DBUser.ConnStr,
 	})
 	if err != nil {
 		log.Fatal().Err(err).Msg("cannot connect to database")
@@ -50,7 +49,7 @@ func main() {
 	router := openapi.NewRouter(UserAPIController)
 
 	srv := &http.Server{
-		Addr:    ":80",
+		Addr:    conf.Server.Addr,
 		Handler: router,
 	}
 
